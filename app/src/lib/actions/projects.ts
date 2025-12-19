@@ -142,48 +142,6 @@ export const getUnpublishedContractChanges = async (
   }
 }
 
-export const createNewProject = async (
-  details: CreateProjectParams,
-  organizationId?: string,
-) => {
-  const session = await auth()
-  const userId = session?.user?.id
-
-  if (!userId) {
-    return {
-      error: "Unauthorized",
-    }
-  }
-
-  const user = await getUserById(session.user.id)
-  if (!user) {
-    return {
-      error: "User not found",
-    }
-  }
-
-  // Create entity attestation
-  const attestationId = await createEntityAttestation({
-    farcasterId: user?.farcasterId ? parseInt(user.farcasterId) : 0,
-    type: "project",
-  })
-
-  const project = await createProject({
-    userId: session.user.id,
-    projectId: attestationId,
-    project: details,
-    organizationId,
-  })
-
-  await setProjectOrganization(project.id, undefined, organizationId)
-
-  revalidatePath("/dashboard")
-  return {
-    error: null,
-    project,
-  }
-}
-
 export const createNewProjectOnBehalf = async (
   details: CreateProjectParams,
   userId: string,
