@@ -10,6 +10,7 @@ import FindMyKYCDialog from "./FindMyKYCDialog"
 import { GetStartedDialog } from "./GetStartedDialog"
 import GovernanceAddressDialog from "./GovernanceAddressDialog"
 import GovernanceTestimonialRequestDialog from "./GovernanceTestimonialRequestDialog"
+import ImportFromFarcasterDialog from "./ImportFromFarcasterDialog"
 import KYCEmailVerificationDialog from "./KYCEmailVerificationDialog"
 import NotRecognizedAddressDialog from "./NotRecognizedAddressDialog"
 import SelectKYCProjectDialog from "./SelectKYCProjectDialog"
@@ -72,6 +73,12 @@ export default function AppDialogs() {
         <DeleteKYCTeamDialog
           open
           onOpenChange={onOpenChange("delete_kyc_team")}
+        />
+      )}
+      {openDialog === "import_from_farcaster" && (
+        <ImportFromFarcasterDialog
+          open
+          onOpenChange={onOpenChange("import_from_farcaster")}
         />
       )}
       {openDialog === "kyc_email_verification" && (

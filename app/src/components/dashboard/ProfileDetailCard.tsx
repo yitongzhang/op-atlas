@@ -17,6 +17,7 @@ import { UserKYCStatus } from "@/lib/actions/userKyc"
 import { UserAvatar } from "../common/UserAvatar"
 import { CitizenshipBadge } from "../common/CitizenshipBadge"
 import { Badge } from "../common/Badge"
+import ImportFromFarcasterDialog from "../dialogs/ImportFromFarcasterDialog"
 import { Button } from "../ui/button"
 import {
   DropdownMenu,
@@ -35,6 +36,7 @@ const ProfileDetailCard = ({
 }) => {
   const { user: loadedUser } = useUser({ id: initialUser.id, enabled: true })
   const user = loadedUser || initialUser
+  const [showImportDialog, setShowImportDialog] = useState(false)
 
   const { isBadgeholder } = useIsBadgeholder(user)
   const { data: citizen } = useCitizen({
@@ -62,15 +64,32 @@ const ProfileDetailCard = ({
       {user.imageUrl ? (
         <UserAvatar imageUrl={user.imageUrl} />
       ) : (
-        <div className="w-20 h-20 my-0.5 flex items-center justify-center rounded-full border border-dashed border-muted bg-none">
+        <button
+          onClick={() => setShowImportDialog(true)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault()
+              setShowImportDialog(true)
+            }
+          }}
+          className="w-20 h-20 my-0.5 flex items-center justify-center rounded-full border border-dashed border-muted bg-none hover:bg-secondary group relative cursor-pointer"
+          aria-label="Add profile picture"
+        >
           <Image
-            className="text-foreground"
+            className="text-foreground group-hover:opacity-0 transition-opacity"
             src="/assets/icons/user-icon.svg"
             alt="user"
             width={18}
             height={18}
           />
-        </div>
+          <Image
+            className="absolute w-6 h-6 text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
+            src="/assets/icons/add-line.svg"
+            alt="add"
+            width={18}
+            height={18}
+          />
+        </button>
       )}
 
       <div className="flex flex-col justify-center">
@@ -178,6 +197,11 @@ const ProfileDetailCard = ({
           </Link>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <ImportFromFarcasterDialog
+        open={showImportDialog}
+        onOpenChange={setShowImportDialog}
+      />
     </div>
   )
 }
