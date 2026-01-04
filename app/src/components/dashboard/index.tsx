@@ -22,6 +22,8 @@ import ApplicationInterruptiveDialogue from "../application/ApplicationInterrupt
 import ExternalLink from "../ExternalLink"
 import CreateOrganizationDialog from "../organizations/CreateOrganizationDialog"
 import { CompleteProfileCallout } from "../profile/CompleteProfileCallout"
+import AddFirstOrganizationProject from "./AddFirstOrganizationProject"
+import AddFirstProject from "./AddFirstProject"
 import ApplicationBanner from "./ApplicationBanner"
 import NoRewardsDialog from "./dialogs/NoRewardsDialog"
 import UnclaimedRewardsDialog from "./dialogs/UnclaimedRewardsDialog"
@@ -190,7 +192,11 @@ const Dashboard = ({
               />
             )}
 
-            {!projects.length && !organizations?.length && null}
+            {!projects.length && !organizations?.length && (
+              <Link href="/projects/new">
+                <AddFirstProject />
+              </Link>
+            )}
           </div>
         )}
 
@@ -199,6 +205,19 @@ const Dashboard = ({
             <div className="flex justify-between items-center">
               <h3>Your projects</h3>
 
+              <Button
+                className="flex items-center gap-2"
+                variant="secondary"
+                onClick={() => (window.location.href = "/projects/new")}
+              >
+                <Image
+                  src="/assets/icons/plus.svg"
+                  width={9}
+                  height={9}
+                  alt="Plus"
+                />
+                Add project
+              </Button>
             </div>
 
             {projects.map((project) => (
@@ -229,7 +248,13 @@ const Dashboard = ({
                     />
                   ))}
                 </>
-              ) : null}
+              ) : (
+                <Link
+                  href={`/projects/new?orgId=${organization.organizationId}`}
+                >
+                  <AddFirstOrganizationProject />
+                </Link>
+              )}
             </div>
           )
         })}
