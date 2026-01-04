@@ -1,6 +1,7 @@
 "use client"
 
 import { Organization } from "@prisma/client"
+import { Plus } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -213,6 +214,26 @@ export function UserProfileSidebar({
             )
           })}
 
+          {currentPage === "new" && (
+            <Link
+              href="/profile/organizations/new"
+              className={cn(
+                currentPage === "new" && "text-foreground font-medium",
+                "flex gap-2 items-center",
+              )}
+            >
+              <div className="text-xl pb-0.5 w-3">•</div>
+              New organization
+            </Link>
+          )}
+
+          <Link
+            href="/profile/organizations/new"
+            className="flex gap-2 items-center py-1"
+          >
+            <Plus size={16} />
+            Make an organization
+          </Link>
         </ul>
       </div>
     </div>
